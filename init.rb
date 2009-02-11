@@ -1,0 +1,1 @@
+LocaleSetup.perform!
