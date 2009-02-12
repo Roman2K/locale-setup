@@ -48,7 +48,8 @@ private
   end
   
   def configure!
-    I18n.load_path = Dir["#{Rails.root}/app/locales/**/*.{rb,yml}"]
+    files = Dir["#{Rails.root}/app/locales/**/*.{rb,yml}"]
+    I18n.load_path = I18n.load_path - files + files
     I18n.locale = I18n.default_locale
     Rails.logger.debug "** Loaded #{I18n.locales.size} locales: #{I18n.locales * ', '}"
   end
