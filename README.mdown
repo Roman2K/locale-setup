@@ -24,7 +24,7 @@ As opposed to Rails 2.3.0 RC1, the load path is not configurable.
 
 In order to make sure only one locale is used, `I18n.default_locale`, regardless of `I18n.locale`, you can state the following in `config/environment.rb`:
 
-    `LocaleSetup.mono_locale!`
+    LocaleSetup.mono_locale!
 
 This can be useful when you just started a new application with localization in mind, but haven't started translating it yet.
 
