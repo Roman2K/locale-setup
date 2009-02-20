@@ -1,15 +1,19 @@
+require 'active_support' unless defined? I18n
+
 class LocaleCheck
-  DIRECTORY = 'locales'
+  DIRECTORY = ENV['DIR'] || 'app/locales'
   
   def self.check_all
     base = ENV['BASE'] || determine_base
-    dir = ENV['DIR'] || DIRECTORY
-    Dir[dir + '/**/*.yml'].each { |file| new(file, base).perform }
+    Dir[DIRECTORY + '/**/*.yml'].each { |file| new(file, base).perform }
   end
   
   def self.determine_base
-    setting_file = Dir['config/initializers/*internationalization*'].first || 'config/environment.rb'
-    eval(File.read(setting_file)[/I18n\.default_locale\s*=\s*([^\s#]+)/i, 1] || ":en")
+    ['config/environment.rb', *Dir['config/initializers/*internationalization*']].
+      reverse.
+      map { |file| eval(File.read(file)[/(?:^|;)\s*(?:config\.i18n|I18n)\.default_locale\s*=\s*([^\s#]+)/, 1] || "") }.
+      compact.
+      first || :en
   end
   
   def initialize(file, base)
@@ -19,7 +23,7 @@ class LocaleCheck
   def perform
     return if structure_file == @file
     
-    puts "\n--------#{" #{@file} ".ljust 40, '-'}"
+    puts "\n-----#{" #{@file} | Based on #{@base.inspect} ".ljust 45, '-'}"
     
     if !File.exist?(structure_file)
       puts "Extraneous file"
@@ -83,7 +87,7 @@ private
       
       # Defaults
       @options[:check_types] = true unless @options.key?(:check_types)
-      @options[:on_extraneous_entry] ||= lambda { |entry| puts "Extraneous entry: '#{entry}'" }
+      @options[:on_extraneous_entry] ||= lambda { |entry| puts "Extraneous entry: #{entry}" }
     end
     
     def perform
@@ -109,8 +113,10 @@ private
       begin
         expected = find_value_at_same_level!
       rescue IndexError
-        @errors += 1
-        @options[:on_extraneous_entry].call(current_entry_name)
+        unless Hash === value
+          @errors += 1
+          @options[:on_extraneous_entry].call(current_entry_name)
+        end
       else
         if @options[:check_types]
           unless types_match?(expected, value)
@@ -119,7 +125,6 @@ private
           end
         end
       end
-      
       if Hash === value
         child = NodeCheck.new(value, @structure, @options, @stack).perform
         @size += child.size
