@@ -5,7 +5,7 @@ class LocaleCheck
   
   def self.check_all
     base = ENV['BASE'] || determine_base
-    Dir[DIRECTORY + '/**/*.yml'].each { |file| new(file, base).perform }
+    Dir[DIRECTORY + '/**/*.{yml,rb}'].each { |file| new(file, base).perform }
   end
   
   def self.determine_base
