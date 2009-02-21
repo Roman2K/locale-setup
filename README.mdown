@@ -22,7 +22,7 @@ As opposed to Rails 2.3.0 RC1, the load path is not configurable.
 
 ## Configuration
 
-In order to make sure only one locale is used, `I18n.default_locale`, regardless of `I18n.locale`, you can state the following in `config/environment.rb`:
+To lock the the current locale to `I18n.default_locale`, regardless of what `I18n.locale` has been set to, you can state the following in `config/environment.rb`:
 
     LocaleSetup.mono_locale!
 
@@ -59,7 +59,7 @@ Then running `rake check_locales` will report the following:
     Missing entry: bar
     >> Entries: 2 | Errors: 2
 
-Of course, with such a small number of keys, there's no need for such a tool. But as the number of keys grows (over 100), the work of synchronizing all locales becomes more tedious. This Rake task does all the comparison work for you, so that you can focus on translating the missing keys and deleting stale ones.
+Of course, with such a small number of keys, there's no need for such a tool. But as the number of keys grows (over 100), keeping all locales in sync becomes more tedious. This Rake task does all the comparison work for you, so that you can focus on translating the missing keys and deleting stale ones.
 
 ## Credits
 
