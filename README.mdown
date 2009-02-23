@@ -22,7 +22,7 @@ As opposed to Rails 2.3.0 RC1, the load path is not configurable.
 
 ## Configuration
 
-To lock the the current locale to `I18n.default_locale`, regardless of what `I18n.locale` has been set to, you can state the following in `config/environment.rb`:
+To lock the current locale to `I18n.default_locale`, regardless of what `I18n.locale` has been set to, you can state the following in `config/environment.rb`:
 
     LocaleSetup.mono_locale!
 
