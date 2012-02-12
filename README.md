@@ -60,7 +60,3 @@ Then running `rake check_locales` will report the following:
     >> Entries: 2 | Errors: 2
 
 Of course, with such a small number of keys, there's no need for such a tool. But as the number of keys grows (over 100), keeping all locales in sync becomes more tedious. This Rake task does all the comparison work for you, so that you can focus on translating the missing keys and deleting stale ones.
-
-## Credits
-
-Written by [Roman Le Négrate](http://roman.flucti.com) ([contact](mailto:roman.lenegrate@gmail.com)). Released under the MIT-license: see the `LICENSE` file.
